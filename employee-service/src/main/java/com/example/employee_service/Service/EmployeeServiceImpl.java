@@ -4,9 +4,9 @@ import com.example.employee_service.Exception.EmployeeNotFoundException;
 import com.example.employee_service.Model.Department;
 import com.example.employee_service.Model.Employee;
 import com.example.employee_service.Repository.EmployeeRepository;
-import com.example.employee_service.client.DepartmentClient;
 
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;

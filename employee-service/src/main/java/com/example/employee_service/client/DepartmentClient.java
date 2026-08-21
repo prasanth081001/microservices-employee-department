@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @FeignClient(name = "department-service",
-configuration ={ FeignRetryConfig.class,
+configuration ={// FeignRetryConfig.class,
         FeignErrorDecoder.class})
 public interface DepartmentClient {
     @GetMapping("/departments/{id}")
