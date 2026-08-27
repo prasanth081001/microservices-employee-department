@@ -7,10 +7,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @RestController
 @RequestMapping("/departments")
 public class DepartmentController {
+    private final AtomicInteger attemptCounter=new AtomicInteger(0);
     private final DepartmentService departmentService;
 
     public DepartmentController(DepartmentService departmentService) {
@@ -37,8 +39,18 @@ public class DepartmentController {
     @GetMapping("/{id}")
     public ResponseEntity<Department> getDepartmentById(
             @PathVariable String id) {
-       // System.out.println("Department api called testing retry");
-        //throw new RuntimeException("testing feign retry");
+        int attempt = attemptCounter.incrementAndGet();
+
+        System.out.println("Department API attempt: " + attempt);
+
+        if (attempt <= 2) {
+            System.out.println("Department Service: Temporary failure");
+            throw new RuntimeException("Temporary failure - testing retry");
+        }
+
+        System.out.println("Department Service: SUCCESS");
+
+        attemptCounter.set(0);
 
         return ResponseEntity.ok(
                 departmentService.getDepartmentById(id)
