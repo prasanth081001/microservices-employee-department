@@ -1,7 +1,9 @@
 package com.example.employee_service.Controller;
 
+import com.example.employee_service.DTO.EmployeeRequest;
 import com.example.employee_service.Model.Employee;
 import com.example.employee_service.Service.EmployeeService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,19 +18,26 @@ public class EmployeeController {
     public EmployeeController(EmployeeService employeeService){
         this.employeeService=employeeService;
     }
-    @PostMapping
+
+    @GetMapping("/admin")
+    public ResponseEntity<String> adminTest() {
+        return ResponseEntity.ok("Admin access successful");
+    }
+   @PostMapping
     public ResponseEntity<Employee> createEmployee(
-            @RequestBody Employee employee) {
+            @Valid @RequestBody EmployeeRequest employeeRequest) {
 
         return new ResponseEntity<>(
-                employeeService.createEmployee(employee),
+                employeeService.createEmployee(employeeRequest),
                 HttpStatus.CREATED
         );
     }
 
     @GetMapping
     public ResponseEntity<List<Employee>> getAllEmployees() {
-        return ResponseEntity.ok(employeeService.getAllEmployee());
+        return ResponseEntity.ok(
+                employeeService.getAllEmployee()
+        );
     }
 
     @GetMapping("/{id}")
@@ -43,10 +52,10 @@ public class EmployeeController {
     @PutMapping("/{id}")
     public ResponseEntity<Employee> updateEmployee(
             @PathVariable String id,
-            @RequestBody Employee employee) {
+            @Valid @RequestBody EmployeeRequest employeeRequest) {
 
         return ResponseEntity.ok(
-                employeeService.updateEmployee(id, employee)
+                employeeService.updateEmployee(id, employeeRequest)
         );
     }
 

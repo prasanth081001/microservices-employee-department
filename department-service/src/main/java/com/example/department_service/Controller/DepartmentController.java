@@ -2,6 +2,7 @@ package com.example.department_service.Controller;
 
 import com.example.department_service.Model.Department;
 import com.example.department_service.Service.DepartmentService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,8 +39,17 @@ public class DepartmentController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Department> getDepartmentById(
-            @PathVariable String id) {
-        int attempt = attemptCounter.incrementAndGet();
+            @PathVariable String id, HttpServletRequest request) throws InterruptedException {
+        System.out.println("Department API called");
+
+        String correlationId =
+                request.getHeader("X-Correlation-ID");
+
+        System.out.println(
+                "Correlation ID: " + correlationId
+        );
+        Thread.sleep(1000);
+       int attempt = attemptCounter.incrementAndGet();
 
         System.out.println("Department API attempt: " + attempt);
 

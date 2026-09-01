@@ -4,13 +4,16 @@ import com.example.employee_service.Model.Department;
 import com.example.employee_service.client.DepartmentRestClient;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 
 @Service
 public class DepartmentServiceCaller {
     private final DepartmentRestClient departmentRestClient;
-    public DepartmentServiceCaller(DepartmentRestClient departmentRestClient) {
+    private final HttpServletRequest request;
+    public DepartmentServiceCaller(DepartmentRestClient departmentRestClient,HttpServletRequest request) {
         this.departmentRestClient=departmentRestClient;
+        this.request=request;
     }
     @Retry(name = "departmentService")
     @CircuitBreaker(

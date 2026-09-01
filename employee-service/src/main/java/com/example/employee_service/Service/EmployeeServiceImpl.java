@@ -1,5 +1,6 @@
 package com.example.employee_service.Service;
 
+import com.example.employee_service.DTO.EmployeeRequest;
 import com.example.employee_service.Exception.EmployeeNotFoundException;
 import com.example.employee_service.Model.Department;
 import com.example.employee_service.Model.Employee;
@@ -21,7 +22,16 @@ public class EmployeeServiceImpl implements EmployeeService{
         this.departmentServiceCaller=departmentServiceCaller;
     }
     @Override
-    public Employee createEmployee(Employee employee){
+    public Employee createEmployee(EmployeeRequest employeeRequest) {
+
+        Employee employee = new Employee();
+
+        employee.setName(employeeRequest.getName());
+        employee.setEmail(employeeRequest.getEmail());
+        employee.setDepartmentId(employeeRequest.getDepartmentId());
+        employee.setDesignation(employeeRequest.getDesignation());
+        employee.setSalary(employeeRequest.getSalary());
+
         return employeeRepository.save(employee);
     }
 
@@ -61,14 +71,20 @@ public class EmployeeServiceImpl implements EmployeeService{
         return employee;
     }
     @Override
-    public Employee updateEmployee(String id,Employee employee){
-        Employee existingEmployee=employeeRepository.findById(id)
-                .orElseThrow(()->new EmployeeNotFoundException("Employee not found"+id));
-        existingEmployee.setName(employee.getName());
-        existingEmployee.setEmail(employee.getEmail());
-        existingEmployee.setDepartmentId(employee.getDepartmentId());
-        existingEmployee.setDesignation(employee.getDesignation());
-        existingEmployee.setSalary(employee.getSalary());
+    public Employee updateEmployee(String id, EmployeeRequest employeeRequest) {
+
+        Employee existingEmployee = employeeRepository.findById(id)
+                .orElseThrow(() ->
+                        new EmployeeNotFoundException(
+                                "Employee not found " + id
+                        ));
+
+        existingEmployee.setName(employeeRequest.getName());
+        existingEmployee.setEmail(employeeRequest.getEmail());
+        existingEmployee.setDepartmentId(employeeRequest.getDepartmentId());
+        existingEmployee.setDesignation(employeeRequest.getDesignation());
+        existingEmployee.setSalary(employeeRequest.getSalary());
+
         return employeeRepository.save(existingEmployee);
     }
     @Override
